@@ -1,0 +1,39 @@
+{
+  "name": "@cellense/lambda-wrappers",
+  "version": "1.0.0",
+  "description": "Typescript lambda wrappers",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+github.com:Cellense/lambda-wrappers.git"
+  },
+  "keywords": [
+    "lambda",
+    "wrapper",
+    "helper"
+  ],
+  "author": "Matúš Čongrády <matus.congrady@cellense.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Cellense/lambda-wrappers/issues"
+  },
+  "homepage": "https://github.com/Cellense/lambda-wrappers#readme",
+  "dependencies": {
+    "aws-lambda": "^0.1.2"
+  },
+  "peerDependencies": {
+    "typescript": "^2.0.0 || ^3.0.0"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.15",
+    "typescript": "^3.1.6"
+  }
+}
