@@ -20,20 +20,24 @@ function asyncWrap<Event = any, Returned = any>(
 ): Handler {
   return (event: Event, context: Context, callback: Callback) => {
     try {
+      logFunctionInvocation(event, context)
       const returned = asyncFn(event, context, callback);
-
       if (returned && returned instanceof Promise) {
         returned
           .then(result => {
+            logFunctionResult(result)
             handleResult(result, callback);
           })
           .catch(error => {
+            logFunctionResult(error)
             handleError(error, callback);
           });
       } else {
+        logFunctionResult(returned)
         handleResult(returned, callback);
       }
     } catch (error) {
+      logFunctionResult(error)
       handleError(error, callback);
     }
   };
@@ -103,4 +107,19 @@ function handleCorsResult(lambdaResult: any, callback: Callback) {
       ...headers
     }
   });
+}
+
+function logFunctionInvocation(event: any, context: Context) {
+  if (process.env.DISABLE_LOGS) return;
+  console.info('INVOKED FUNCTION');
+  if (event.requestContext && event.requestContext.authorizer && event.requestContext.authorizer.claims) {
+    console.info(event.requestContext.httpMethod, event.path);
+    console.info('User: ', event.requestContext.authorizer.claims.email);  
+  }
+  console.info('Context: ' , JSON.stringify(context));
+  console.info('Event: ' , JSON.stringify(event));
+}
+function logFunctionResult(result: any) {
+  if (process.env.DISABLE_LOGS) return;
+  console.info('FUNCTION ENDED with result: ' , JSON.stringify(result));
 }
